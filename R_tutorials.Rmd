@@ -1,8 +1,10 @@
 ---
-title: " TUTORIAL EXERCISES @ http://r4ds.had.co.nz/data-visualisation.html"
+title: ' TUTORIAL EXERCISES @ http://r4ds.had.co.nz/data-visualisation.html'
 author: "Manojit Sarkar"
 date: "7 July 2018"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ##Pre exercise library calls
@@ -159,11 +161,39 @@ ggplot(mpg,aes(x=cty,y=displ,shape=fl))+geom_point()
 
 3)What happens if you map the same variable to multiple aesthetics?
 
+multi aesthetics on continous variable
+
+```{r}
+ggplot(mpg,aes(x=cty,y=displ,color=hwy,size=hwy))+geom_point()
+```
+
+yes it can be represented with color and size for continous variables.
+
+multi aesthetics on caterogical variables.
+
+```{r}
+ggplot(mpg,aes(x=cty,y=displ,color=class,size=class))+geom_point()
+```
+Ans With same categorial variables can be plotted but with warnings.
 
 
 
-What does the stroke aesthetic do? What shapes does it work with? (Hint: use ?geom_point)
+
+4)What does the stroke aesthetic do? What shapes does it work with? (Hint: use ?geom_point)
+```{r}
+?geom_point
+
+ggplot(mpg,aes(x=cty,y=displ,shape=fl))+geom_point(stroke=4)
+```
+
+stroke alters the sizes of shapes
+
 
 What happens if you map an aesthetic to something other than a variable name, like aes(colour = displ < 5)?
 
+```{r}
+ggplot(mpg,aes(x=displ,y=hwy,color=displ<5))+geom_point()
+```
+   
+   It changes the values into boolean i.e true and false ; true / false depicting different colours each and is ploted to the graph.
 
