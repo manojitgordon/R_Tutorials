@@ -1,0 +1,63 @@
+---
+title: "http://r4ds.had.co.nz/data-visualisation.html"
+author: "Manojit Sarkar"
+date: "7 July 2018"
+output: html_document
+---
+
+##Post exercise library calls
+```{r}
+
+library(tidyverse)
+```
+
+
+##3.2.4 Exercises
+
+1)Run ggplot(data = mpg). What do you see?
+
+```{r}
+ggplot(mpg)
+```
+
+Ans: No graph plot shown.
+
+2)How many rows are in mpg? How many columns?
+
+```{r dimension mpg}
+dim(mpg)
+```
+Ans : 234 rows and 11 coloumns.
+
+3)What does the drv variable describe? Read the help for ?mpg to find out.
+
+```{r}
+?mpg
+```
+
+Ans :f = front-wheel drive, r = rear wheel drive, 4 = 4wd (what drive the car is )
+
+4)Make a scatterplot of hwy vs cyl.
+
+1st code :
+```{r}
+ggplot(mpg,aes(x=hwy,y=cyl))+geom_point()
+```
+
+2nd Code:
+```{r}
+ggplot(mpg)+geom_point(mapping = aes(x=hwy,y=cyl))
+```
+
+
+
+5)What happens if you make a scatterplot of class vs drv? Why is the plot not useful?
+
+
+```{r}
+ggplot(mpg,aes(x=class,y=drv))+geom_point()
+```
+
+Ans: The plot is not useful as the variables used are categorical variables.
+
+
