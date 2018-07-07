@@ -1,5 +1,5 @@
 ---
-title: "http://r4ds.had.co.nz/data-visualisation.html"
+title: " TUTORIAL EXERCISES @ http://r4ds.had.co.nz/data-visualisation.html"
 author: "Manojit Sarkar"
 date: "7 July 2018"
 output: html_document
