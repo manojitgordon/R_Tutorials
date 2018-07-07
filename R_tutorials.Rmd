@@ -5,7 +5,7 @@ date: "7 July 2018"
 output: html_document
 ---
 
-##Post exercise library calls
+##Pre exercise library calls
 ```{r}
 
 library(tidyverse)
