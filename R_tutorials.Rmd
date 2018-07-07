@@ -1,0 +1,169 @@
+---
+title: " TUTORIAL EXERCISES @ http://r4ds.had.co.nz/data-visualisation.html"
+author: "Manojit Sarkar"
+date: "7 July 2018"
+output: html_document
+---
+
+##Pre exercise library calls
+```{r}
+
+library(tidyverse)
+```
+
+
+##3.2.4 Exercises
+
+1)Run ggplot(data = mpg). What do you see?
+
+```{r}
+ggplot(mpg)
+```
+
+Ans: No graph plot shown.
+
+2)How many rows are in mpg? How many columns?
+
+```{r dimension mpg}
+dim(mpg)
+```
+Ans : 234 rows and 11 coloumns.
+
+3)What does the drv variable describe? Read the help for ?mpg to find out.
+
+```{r}
+?mpg
+```
+
+Ans :f = front-wheel drive, r = rear wheel drive, 4 = 4wd (what drive the car is )
+
+4)Make a scatterplot of hwy vs cyl.
+
+1st code :
+```{r}
+ggplot(mpg,aes(x=hwy,y=cyl))+geom_point()
+```
+
+2nd Code:
+```{r}
+ggplot(mpg)+geom_point(mapping = aes(x=hwy,y=cyl))
+```
+
+
+
+5)What happens if you make a scatterplot of class vs drv? Why is the plot not useful?
+
+
+```{r}
+ggplot(mpg,aes(x=class,y=drv))+geom_point()
+```
+
+Ans: The plot is not useful as the variables used are categorical variables.
+
+
+## 3.3.1 Exercises
+1)What’s gone wrong with this code? Why are the points not blue?
+
+
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, color = "blue"))
+```
+
+
+Ans:Since colour = "blue" was included within the mapping argument, it was treated as an aesthetic (a mapping between a variable and a value). The expression, color="blue", treats "blue" as a variable with only one value: "blue". If this is confusing, consider how colour = 1:234 or colour = 1 would be interpreted by aes(). 
+@ ans from  https://github.com/jrnold/r4ds-exercise-solutions/blob/master/visualize.Rmd
+
+```{r}
+ggplot(data = mpg) + 
+    geom_point(mapping = aes(x = displ, y = hwy), color = "blue")
+```
+
+
+2)Which variables in mpg are categorical? Which variables are continuous? (Hint: type ?mpg to read the documentation for the dataset). How can you see this information when you run mpg?
+
+Ans there are many ways to know this 
+
+1st way 
+
+```{r}
+sapply(mpg,class)
+```
+
+2nd way 
+
+```{r}
+? mpg 
+## and then check the documentation
+```
+
+<UL>
+<h1> Categorical Variables</h1>
+<li>manfacturer</li>
+<li>model</li>
+<li>trans</li>
+<li>drv</li>
+<li>fl</li>
+<li>class</li>
+
+</UL>
+
+<UL>
+<h1> Continous Variables</h1>
+<li>displ</li>
+<li>hwy</li>
+<li>year<li>
+<li>cty</li>
+</UL>
+
+3)Map a continuous variable to color, size, and shape. How do these aesthetics behave differently for categorical vs. continuous variables?
+
+## COLOR
+```{r}
+ggplot(mpg,aes(x=cty,y=displ,color=hwy))+geom_point()
+```
+
+## SIZE
+```{r}
+ggplot(mpg,aes(x=cty,y=displ,size=hwy))+geom_point()
+```
+
+## SHAPE
+```{r}
+#ggplot(mpg,aes(x=cty,y=displ,shape=year))+geom_point()
+```
+
+ Continous variable cannot be mapped to shape
+ 
+## Color with categorical variable
+ 
+```{r}
+ggplot(mpg,aes(x=cty,y=displ,color=class))+geom_point()
+```
+Ans :For continous variable there was same colour with different intensity , while for categorical variables there are different colours for each type.
+
+
+## Size with categorical variable
+
+```{r}
+ggplot(mpg,aes(x=cty,y=displ,size=fl))+geom_point()
+```
+
+A warning with size is not advised for discrete variables.
+
+
+```{r}
+ggplot(mpg,aes(x=cty,y=displ,shape=fl))+geom_point()
+```
+ It display the grap as against continous variable. But shape palette can display a maximum of 6 shapes.
+
+3)What happens if you map the same variable to multiple aesthetics?
+
+
+
+
+What does the stroke aesthetic do? What shapes does it work with? (Hint: use ?geom_point)
+
+What happens if you map an aesthetic to something other than a variable name, like aes(colour = displ < 5)?
+
+
