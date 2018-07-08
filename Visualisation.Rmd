@@ -3,8 +3,8 @@ title: ' TUTORIAL EXERCISES @ http://r4ds.had.co.nz/data-visualisation.html'
 author: "Manojit Sarkar"
 date: "7 July 2018"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 
 ##Pre exercise library calls
@@ -189,11 +189,99 @@ ggplot(mpg,aes(x=cty,y=displ,shape=fl))+geom_point(stroke=4)
 stroke alters the sizes of shapes
 
 
-What happens if you map an aesthetic to something other than a variable name, like aes(colour = displ < 5)?
+5)What happens if you map an aesthetic to something other than a variable name, like aes(colour = displ < 5)?
 
 ```{r}
 ggplot(mpg,aes(x=displ,y=hwy,color=displ<5))+geom_point()
 ```
    
    It changes the values into boolean i.e true and false ; true / false depicting different colours each and is ploted to the graph.
+   
+   
+   
+##3.5.1 Exercises
+   
+1)What happens if you facet on a continuous variable?
 
+
+```{r}
+ggplot(mpg,aes(x=displ,y=hwy))+geom_point()+facet_wrap(~cty)
+```
+
+```{r}
+ggplot(mpg,aes(x=displ,y=hwy))+geom_point()+facet_grid(year~cty)
+```
+  
+  It plots it but takes time .
+
+2)What do the empty cells in plot with facet_grid(drv ~ cyl) mean? How do they relate to this plot?
+
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = drv, y = cyl))+facet_grid(drv~cyl)
+```
+Its shows that there are no data for such combinations hence empty cells.
+
+3)What plots does the following code make? What does . do?
+
+
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_grid(drv ~ .)
+```
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_grid(. ~ cyl)
+```
+
+ "." decides which side the facet will be i.e coloumn wise or row wise ; for example (cyl~.) means facetting will be done row wise i.e cyl will be row and (.~cyl) means facetting will be done coloumn wise i.e cyl will be coloumn.
+
+
+4)Take the first faceted plot in this section:
+
+```{r}
+
+ggplot(data = mpg) + 
+geom_point(mapping = aes(x = displ, y = hwy)) + 
+  facet_wrap(~ class, nrow = 2)
+```
+
+What are the advantages to using faceting instead of the colour aesthetic? What are the disadvantages? How might the balance change if you had a larger dataset?
+
+Ans : Advantages:
+Its is better to concentrate on a particular facet alone, while with colour aesthetics is good but with large data set it will become difficult to read a particular relation .  
+    Disadvantages:
+ Reading global relationship is difficult with facets.
+ 
+5)Read ?facet_wrap. What does nrow do? What does ncol do? What other options control the layout of the individual panels? Why doesn’t facet_grid() have nrow and ncol arguments?
+
+```{r}
+?facet_wrap
+```
+ 
+ nrow - Specifies the number of rows. 
+ ncol - Specifies the number of coloumns.
+ 
+ other layout control options:
+ 
+ Scales: with argument 
+ ="free_x"-- the x axis is free to take any scale for different facets.
+ ="free_y"-- the y axis is free to take any scale for different facets.
+ =fixed -- where the scales are fixed for all facets (by default)
+ =free-- both x and y axes are free to take up any scale for different facets
+ 
+ 
+strip.position: with arguments
+ By default the labels are displayed on the top of the plot
+ 
+"top", "bottom" "left" "right"
+ 
+6)When using facet_grid() you should usually put the variable with more unique levels in the columns. Why?
+
+Most screens are wider than they are tall. so it would be easier to read.
+
+##SOME  TIPS :
+##Difference between facet_wrap vs facet_grid
+ https://stackoverflow.com/questions/20457905/whats-the-difference-between-facet-wrap-and-facet-grid-in-ggplot2
