@@ -307,7 +307,7 @@ Ans geom_boxplot()
 <B>Histogram</B>
 
 ```{r}
-ggplot(mpg,aes(x=hwy))+geom_histogram(bins=20)
+ggplot(mpg,aes(x=displ))+geom_histogram(bins=20)
 ```
 Ans geom_histogram()
 
@@ -403,3 +403,180 @@ ggplot(mpg,aes(x=displ,y=hwy))+geom_smooth(se=F,aes(group=drv))+geom_point(aes(c
 ggplot(mpg,aes(x=displ,y=hwy))+geom_point(size=4,color="white")+geom_point(aes(color=drv))
 ```
 
+
+
+##3.7.1 Exercises
+
+1)What is the default geom associated with stat_summary()? How could you rewrite the previous plot to use that geom function instead of the stat function?
+
+Previous Plot 
+```{r}
+ggplot(data = diamonds) + 
+  stat_summary(
+    mapping = aes(x = cut, y = depth),
+    fun.ymin = min,
+    fun.ymax = max,
+    fun.y = median
+  )
+```
+
+Ans : geop_pointrange()
+
+```{r}
+ggplot(diamonds)+geom_pointrange(aes(cut,depth),stat="summary",fun.ymax=max,fun.ymin=min,fun.y=median)
+```
+
+2)What does geom_col() do? How is it different to geom_bar()?
+
+Ans : geom_bar uses stat_count by default: it counts the number of cases at each x position. 
+geom_col uses stat_identity: it leaves the data as it is.
+
+
+3)Most geoms and stats come in pairs that are almost always used in concert. Read through the documentation and make a list of all the pairs. What do they have in common?
+
+
+Ans  
+
+
+4) What variables does stat_smooth() compute? What parameters control its behaviour?
+
+ Ans stat_smooth() compute the y i.e predicted variable . Parameteres that control its behaviour are ymin ymax and se.
+
+
+5) In our proportion bar chart, we need to set group = 1. Why? In other words what is the problem with these two graphs?
+
+
+```{r}
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, y = ..prop..))
+```
+```{r} 
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, fill = color, y = ..prop..))
+```
+
+
+group="whatever" ( group =1 )is a "dummy" grouping to override the default behavior, which (here) is to group by "cut"" and in general is to group by the x variable. The default for geom_bar is to group by the x variable in order to separately count the number of rows in each level of the x variable. For example, here, the default would be for geom_bar to return the number of rows with cut equal to "Fair", "Good", etc.
+
+However, if we want proportions, then we need to consider all levels of cut together.
+
+The data are first grouped by cut, so each level of cut is considered separately. The proportion of Fair in Fair is 100%, as is the proportion of Good in Good, etc. 
+
+group=1 (or group="anything", etc.) prevents this, so that the proportions of each level of cut will be relative to all levels of cut.
+
+
+```{r}
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, fill = color, y = ..prop..,group=1))
+```
+```{r}
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, fill = color, y = ..prop..,group=color))
+```
+
+
+##3.8.1 Exercises
+
+
+1.What is the problem with this plot? How could you improve it?
+```{r}
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) + 
+  geom_point()
+
+```
+
+Ans : Some of the points are overlaping each other and hene hiding the points , the solution to this is adding position: jitter and making the points a bit transperent 
+
+
+```{r}
+ggplot(data = mpg,aes(x = cty, y = hwy)) + geom_point(position="jitter",alpha=.5)
+
+```
+
+2) What parameters to geom_jitter() control the amount of jittering?
+
+width	
+Amount of vertical and horizontal jitter. The jitter is added in both positive and negative directions, so the total spread is twice the value specified.
+
+height	
+Amount of vertical and horizontal jitter. The jitter is added in both positive and negative directions, so the total spread is twice the value specified.
+
+
+
+```{r}
+ggplot(mpg, aes(x = cty, y = hwy)) + geom_point() +geom_jitter(width = 4, height = 4)
+```
+
+3)Compare and contrast geom_jitter() with geom_count().
+
+Seems like geom_count() increases the size of the points when there are more overlapping points. Kind of like estimating the density of points in that location,also providing a legend. 
+geom_jitter() just makes all the points visible by giving them a random noise and keep the points the same size.
+
+geom_count
+
+```{r}
+ggplot(mpg, aes(x = cty, y = hwy)) + geom_count() 
+```
+
+geom_jitter
+
+```{r}
+ggplot(mpg, aes(x = cty, y = hwy)) + geom_jitter()
+```
+What’s the default position adjustment for geom_boxplot()? Create a visualisation of the mpg dataset that demonstrates it.
+
+```{r}
+ggplot(mpg,aes(class,hwy))+geom_boxplot()
+```
+ Ans : the default position is "dodge"
+ 
+ 
+##3.9.1 Exercises
+
+1)Turn a stacked bar chart into a pie chart using coord_polar().
+
+Stacked bar chart
+```{r}
+ggplot(diamonds,aes(x=cut,fill=clarity))+geom_bar()
+```
+
+Converting it into a Coxcomb chart using coord_polar()
+```{r}
+ggplot(diamonds,aes(x=cut,fill=clarity))+geom_bar(width=1)+coord_polar()
+```
+ 
+2)What does labs() do? Read the documentation.
+
+
+```{r}
+?labs
+```
+
+Ans It stands for label.
+
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy)) + geom_point(position = "jitter")+labs(title="New Title",x= " New X Title",y="New Y Title")
+```
+
+3)What’s the difference between coord_quickmap() and coord_map()?
+
+coord_map projects a portion of the earth, which is approximately spherical, onto a flat 2D plane using any projection defined by the mapproj package. Map projections do not, in general, preserve straight lines, so this requires considerable computation. coord_quickmap is a quick approximation that does preserve straight lines. It works best for smaller areas closer to the equator.
+
+
+4)What does the plot below tell you about the relationship between city and highway mpg? Why is coord_fixed() important? What does geom_abline() do?
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
+  geom_point() + 
+  geom_abline() +
+  coord_fixed()
+```
+
+Ans: Its shows a positive linear relationship between cty and hwy i.e as the value of cty increases  hwy also increases.
+The relationships is approximately linear, though overall cars have slightly better highway mileage than city mileage. 
+
+coord_fixed()
+A fixed scale coordinate system forces a specified ratio between the physical representation of data units on the axes. The ratio represents the number of units on the y-axis equivalent to one unit on the x-axis. The default, ratio = 1, ensures that one unit on the x-axis is the same length as one unit on the y-axis. Ratios higher than one make units on the y axis longer than units on the x-axis, and vice versa.
+
+geom_abline()
+draws a line that, by default, has an intercept of 0 and slope of 1.
