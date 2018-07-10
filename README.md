@@ -1,5 +1,7 @@
-# R_Tutorials
+# R_Tutorials_r4ds
+
 https://manojitgordon.github.io/R_Tutorials/Visualisation
+
 https://manojitgordon.github.io/R_Tutorials/Workflow_Basics
 
-Click the above link for web rendering of the HTML
+Click the above links for web rendering of the HTML.
